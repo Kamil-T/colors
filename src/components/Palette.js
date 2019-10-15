@@ -1,24 +1,19 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import ColorBox from './ColorBox'
-import Slider from 'rc-slider'
-import 'rc-slider/assets/index.css'
 import './Palette.css'
+import { LevelContext } from '../contexts/LevelContext'
+import Navbar from './Navbar'
 
 const Palette = ({ palette }) => {
-  const [level, setLevel] = useState(500)
+  const [level] = useContext(LevelContext)
+
   const colorBoxes = palette.colors[level].map(color => (
     <ColorBox background={color.hex} name={color.name} />
   ))
 
   return (
     <div className='Palette'>
-      <Slider
-        defaultValue={level}
-        min={100}
-        max={900}
-        onAfterChange={setLevel}
-        step={100}
-      />
+      <Navbar />
       <div className='Palette-colors'>{colorBoxes}</div>
     </div>
   )
