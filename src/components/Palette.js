@@ -1,14 +1,15 @@
 import React, { useContext } from 'react'
 import ColorBox from './ColorBox'
 import './Palette.css'
-import { LevelContext } from '../contexts/LevelContext'
+import { LevelContext, FormatContext } from '../contexts/ColorContext'
 import Navbar from './Navbar'
 
 const Palette = ({ palette }) => {
   const [level] = useContext(LevelContext)
+  const [format] = useContext(FormatContext)
 
   const colorBoxes = palette.colors[level].map(color => (
-    <ColorBox background={color.hex} name={color.name} />
+    <ColorBox background={color[format]} name={color.name} />
   ))
 
   return (
