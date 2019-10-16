@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import useToggle from '../hooks/useToggle'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -27,7 +28,7 @@ const Navbar = () => {
   return (
     <nav className='Navbar'>
       <div className='logo'>
-        <a href='#'>reactcolorpicker</a>
+        <Link to='/'>reactcolorpicker</Link>
       </div>
       <div className='slider-container'>
         <span>Level: {level}</span>
