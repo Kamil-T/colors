@@ -7,8 +7,9 @@ import Navbar from './Navbar'
 const Palette = ({ palette }) => {
   const [level] = useContext(LevelContext)
   const [format] = useContext(FormatContext)
+  const { colors, paletteName, emoji } = palette
 
-  const colorBoxes = palette.colors[level].map(color => (
+  const colorBoxes = colors[level].map(color => (
     <ColorBox background={color[format]} name={color.name} />
   ))
 
@@ -16,6 +17,9 @@ const Palette = ({ palette }) => {
     <div className='Palette'>
       <Navbar />
       <div className='Palette-colors'>{colorBoxes}</div>
+      <footer className='Palette-footer'>
+        {paletteName} <span className='emoji'>{emoji}</span>
+      </footer>
     </div>
   )
 }

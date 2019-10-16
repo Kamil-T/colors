@@ -1,6 +1,10 @@
 import React, { useContext } from 'react'
+import useToggle from '../hooks/useToggle'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import Snackbar from '@material-ui/core/Snackbar'
+import IconButton from '@material-ui/core/IconButton'
+import CloseIcon from '@material-ui/icons/Close'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import './Navbar.css'
@@ -9,9 +13,15 @@ import { LevelContext, FormatContext } from '../contexts/ColorContext'
 const Navbar = () => {
   const [level, setLevel] = useContext(LevelContext)
   const [format, setFormat] = useContext(FormatContext)
+  const [open, setOpen] = useToggle(false)
 
   const changeFormat = e => {
     setFormat(e.target.value)
+    setOpen(open)
+  }
+
+  const closeSnackbar = () => {
+    setOpen(open)
   }
 
   return (
@@ -38,6 +48,23 @@ const Navbar = () => {
           <MenuItem value='rgba'>RGBA - rgba(255, 255, 255, 1.0)</MenuItem>
         </Select>
       </div>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        open={open}
+        autoHideDuration={3000}
+        message={<span id='message-id'>Format Changed!</span>}
+        ContentProps={{ 'aria-describedby': 'message-id' }}
+        onClose={closeSnackbar}
+        action={[
+          <IconButton
+            onClick={closeSnackbar}
+            color='inherit'
+            key='close'
+            aria-label='close'>
+            <CloseIcon />
+          </IconButton>
+        ]}
+      />
     </nav>
   )
 }
