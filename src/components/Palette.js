@@ -7,10 +7,15 @@ import Navbar from './Navbar'
 const Palette = ({ palette }) => {
   const [level] = useContext(LevelContext)
   const [format] = useContext(FormatContext)
-  const { colors, paletteName, emoji } = palette
+  const { colors, paletteName, emoji, id } = palette
 
   const colorBoxes = colors[level].map(color => (
-    <ColorBox background={color[format]} name={color.name} />
+    <ColorBox
+      background={color[format]}
+      name={color.name}
+      key={color.id}
+      moreUrl={`/palette/${id}/${color.id}`}
+    />
   ))
 
   return (

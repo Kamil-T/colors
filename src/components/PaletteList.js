@@ -42,7 +42,7 @@ const PaletteList = ({ palettes, classes, history }) => {
         </nav>
         <div className={classes.palettes}>
           {palettes.map(palette => (
-            <MiniPalette history={history} {...palette} />
+            <MiniPalette history={history} key={palette.id} {...palette} />
           ))}
         </div>
       </div>
