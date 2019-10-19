@@ -11,7 +11,7 @@ import 'rc-slider/assets/index.css'
 import './Navbar.css'
 import { LevelContext, FormatContext } from '../contexts/ColorContext'
 
-const Navbar = () => {
+const Navbar = ({ showingLevel }) => {
   const [level, setLevel] = useContext(LevelContext)
   const [format, setFormat] = useContext(FormatContext)
   const [open, setOpen] = useToggle(false)
@@ -30,18 +30,20 @@ const Navbar = () => {
       <div className='logo'>
         <Link to='/'>reactcolorpicker</Link>
       </div>
-      <div className='slider-container'>
-        <span>Level: {level}</span>
-        <div className='slider'>
-          <Slider
-            defaultValue={level}
-            min={100}
-            max={900}
-            onAfterChange={setLevel}
-            step={100}
-          />
+      {showingLevel && (
+        <div className='slider-container'>
+          <span>Level: {level}</span>
+          <div className='slider'>
+            <Slider
+              defaultValue={level}
+              min={100}
+              max={900}
+              onAfterChange={setLevel}
+              step={100}
+            />
+          </div>
         </div>
-      </div>
+      )}
       <div className='select-container'>
         <Select value={format} onChange={changeFormat}>
           <MenuItem value='hex'>HEX - #ffffff</MenuItem>
