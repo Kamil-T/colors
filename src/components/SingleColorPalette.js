@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import ColorBox from './ColorBox'
 import Navbar from './Navbar'
 import { FormatContext } from '../contexts/ColorContext'
@@ -6,7 +7,7 @@ import PaletteFooter from './PaletteFooter'
 
 const SingleColorPalette = ({ palette, colorId }) => {
   const [format] = useContext(FormatContext)
-  const { paletteName, emoji } = palette
+  const { paletteName, emoji, id } = palette
 
   const gatherShades = (palette, filterByColor) => {
     let shades = []
@@ -32,9 +33,16 @@ const SingleColorPalette = ({ palette, colorId }) => {
   ))
 
   return (
-    <div className='Palette'>
+    <div className='SingleColorPalette Palette'>
       <Navbar showingLevel={false} />
-      <div className='Palette-colors'>{colorBoxes}</div>
+      <div className='Palette-colors'>
+        {colorBoxes}
+        <div className='go-back ColorBox'>
+          <Link to={`/palette/${id}`} className='back-btn'>
+            Go Back
+          </Link>
+        </div>
+      </div>
       <PaletteFooter paletteName={paletteName} emoji={emoji} />
     </div>
   )
