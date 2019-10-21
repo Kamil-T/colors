@@ -6,6 +6,7 @@ import SingleColorPalette from './components/SingleColorPalette'
 import seedPalettes from './seedPalettes'
 import { generatePalette } from './colorHelpers'
 import ColorProvider from './contexts/ColorContext'
+import NewPaletteForm from './components/NewPaletteForm'
 
 function App() {
   const findPalette = id => {
@@ -24,6 +25,7 @@ function App() {
             <PaletteList palettes={seedPalettes} {...routeProps} />
           )}
         />
+        <Route exact path='/palette/new' render={() => <NewPaletteForm />} />
         <Route
           exact
           path='/palette/:id'
