@@ -1,11 +1,15 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { withStyles } from '@material-ui/styles'
+import styles from '../styles/PaletteStyles'
 import ColorBox from './ColorBox'
 import Navbar from './Navbar'
 import { FormatContext } from '../contexts/ColorContext'
 import PaletteFooter from './PaletteFooter'
 
-const SingleColorPalette = ({ palette, colorId }) => {
+
+
+const SingleColorPalette = ({ palette, colorId, classes }) => {
   const [format] = useContext(FormatContext)
   const { paletteName, emoji, id } = palette
 
@@ -33,12 +37,12 @@ const SingleColorPalette = ({ palette, colorId }) => {
   ))
 
   return (
-    <div className='SingleColorPalette Palette'>
+    <div className={classes.Palette}>
       <Navbar showingLevel={false} />
-      <div className='Palette-colors'>
+      <div className={classes.colors}>
         {colorBoxes}
-        <div className='go-back ColorBox'>
-          <Link to={`/palette/${id}`} className='back-btn'>
+        <div className={classes.goBack}>
+          <Link to={`/palette/${id}`} className={classes.backBtn}>
             Go Back
           </Link>
         </div>
@@ -48,4 +52,4 @@ const SingleColorPalette = ({ palette, colorId }) => {
   )
 }
 
-export default SingleColorPalette
+export default withStyles(styles)(SingleColorPalette)

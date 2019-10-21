@@ -1,11 +1,12 @@
 import React, { useContext } from 'react'
+import { withStyles } from '@material-ui/styles'
+import styles from '../styles/PaletteStyles'
 import ColorBox from './ColorBox'
-import './Palette.css'
 import { LevelContext, FormatContext } from '../contexts/ColorContext'
 import Navbar from './Navbar'
 import PaletteFooter from './PaletteFooter'
 
-const Palette = ({ palette }) => {
+const Palette = ({ palette, classes }) => {
   const [level] = useContext(LevelContext)
   const [format] = useContext(FormatContext)
   const { colors, paletteName, emoji, id } = palette
@@ -21,12 +22,12 @@ const Palette = ({ palette }) => {
   ))
 
   return (
-    <div className='Palette'>
+    <div className={classes.Palette}>
       <Navbar showingLevel />
-      <div className='Palette-colors'>{colorBoxes}</div>
+      <div className={classes.colors}>{colorBoxes}</div>
       <PaletteFooter paletteName={paletteName} emoji={emoji} />
     </div>
   )
 }
 
-export default Palette
+export default withStyles(styles)(Palette)
