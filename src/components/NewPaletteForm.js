@@ -16,6 +16,8 @@ import { ChromePicker } from 'react-color'
 const NewPaletteForm = () => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
+  const [currentColor, setColor] = useState('teal')
+  const [colors, addColor] = useState([])
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -23,6 +25,14 @@ const NewPaletteForm = () => {
 
   const handleDrawerClose = () => {
     setOpen(false)
+  }
+
+  const updateCurrentColor = newColor => {
+    setColor(newColor.hex)
+  }
+
+  const addNewColor = () => {
+    addColor([...colors, currentColor])
   }
 
   return (
@@ -70,8 +80,15 @@ const NewPaletteForm = () => {
             Random Palette
           </Button>
         </div>
-        <ChromePicker color='purple' />
-        <Button variant='contained' color='primary'>
+        <ChromePicker
+          color={currentColor}
+          onChangeComplete={updateCurrentColor}
+        />
+        <Button
+          variant='contained'
+          color='primary'
+          style={{ backgroundColor: currentColor }}
+          onClick={addNewColor}>
           Add Color
         </Button>
       </Drawer>
@@ -80,6 +97,11 @@ const NewPaletteForm = () => {
           [classes.contentShift]: open
         })}>
         <div className={classes.drawerHeader} />
+        <ul>
+          {colors.map(color => (
+            <li style={{ backgroundColor: color }}>{color}</li>
+          ))}
+        </ul>
       </main>
     </div>
   )
