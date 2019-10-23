@@ -16,7 +16,7 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import { ChromePicker } from 'react-color'
 import useInputState from '../hooks/useInputState'
 
-const NewPaletteForm = () => {
+const NewPaletteForm = ({ savePalette, history }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [currentColor, setColor] = useState('teal')
@@ -54,11 +54,23 @@ const NewPaletteForm = () => {
     reset()
   }
 
+  const handleSubmit = () => {
+    let newName = 'Test Palette'
+    const newPalette = {
+      paletteName: newName,
+      id: newName.toLowerCase().replace(/ /g, '-'),
+      colors: colors
+    }
+    savePalette(newPalette)
+    history.push('/')
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position='fixed'
+        color='default'
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open
         })}>
@@ -74,6 +86,9 @@ const NewPaletteForm = () => {
           <Typography variant='h6' noWrap>
             Persistent drawer
           </Typography>
+          <Button variant='contained' color='primary' onClick={handleSubmit}>
+            Save Palette
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -129,7 +144,11 @@ const NewPaletteForm = () => {
         })}>
         <div className={classes.drawerHeader} />
         {colors.map(color => (
-          <DraggableColorBox color={color.color} name={color.name} />
+          <DraggableColorBox
+            color={color.color}
+            name={color.name}
+            key={color.name}
+          />
         ))}
       </main>
     </div>
