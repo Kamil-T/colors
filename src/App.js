@@ -19,7 +19,6 @@ function App() {
 
   const savePalette = newPalette => {
     setPalettes([...palettes, newPalette])
-    console.log(palettes)
   }
 
   return (
@@ -36,7 +35,11 @@ function App() {
           exact
           path='/palette/new'
           render={routeProps => (
-            <NewPaletteForm savePalette={savePalette} {...routeProps} />
+            <NewPaletteForm
+              palettes={palettes}
+              savePalette={savePalette}
+              {...routeProps}
+            />
           )}
         />
         <Route

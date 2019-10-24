@@ -16,12 +16,13 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import { ChromePicker } from 'react-color'
 import useInputState from '../hooks/useInputState'
 
-const NewPaletteForm = ({ savePalette, history }) => {
+const NewPaletteForm = ({ palettes, savePalette, history }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [currentColor, setColor] = useState('teal')
-  const [colors, addColor] = useState([{ color: 'blue', name: 'blue' }])
-  const [newName, setName, reset] = useInputState('')
+  const [colors, setColors] = useState([{ color: 'blue', name: 'blue' }])
+  const [newColorName, setColorName, resetColorName] = useInputState('')
+  const [newPaletteName, setPaletteName] = useInputState('')
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isColorNameUnique', value =>
@@ -31,7 +32,13 @@ const NewPaletteForm = ({ savePalette, history }) => {
     ValidatorForm.addValidationRule('isColorUnique', value =>
       colors.every(({ color }) => color !== currentColor)
     )
-  }, [colors, currentColor])
+
+    ValidatorForm.addValidationRule('isPaletteNameUnique', value =>
+      palettes.every(
+        ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
+      )
+    )
+  }, [colors, currentColor, palettes])
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -48,21 +55,25 @@ const NewPaletteForm = ({ savePalette, history }) => {
   const addNewColor = () => {
     const newColor = {
       color: currentColor,
-      name: newName
+      name: newColorName
     }
-    addColor([...colors, newColor])
-    reset()
+    setColors([...colors, newColor])
+    resetColorName()
   }
 
   const handleSubmit = () => {
-    let newName = 'Test Palette'
     const newPalette = {
-      paletteName: newName,
-      id: newName.toLowerCase().replace(/ /g, '-'),
+      paletteName: newPaletteName,
+      id: newPaletteName.toLowerCase().replace(/ /g, '-'),
       colors: colors
     }
     savePalette(newPalette)
     history.push('/')
+  }
+
+  const deleteColorBox = colorName => {
+    const updatedColors = colors.filter(color => color.name !== colorName)
+    setColors(updatedColors)
   }
 
   return (
@@ -86,9 +97,19 @@ const NewPaletteForm = ({ savePalette, history }) => {
           <Typography variant='h6' noWrap>
             Persistent drawer
           </Typography>
-          <Button variant='contained' color='primary' onClick={handleSubmit}>
-            Save Palette
-          </Button>
+          <ValidatorForm onSubmit={handleSubmit}>
+            <TextValidator
+              label='Palette Name'
+              value={newPaletteName}
+              name='newPaletteName'
+              onChange={setPaletteName}
+              validators={['required', 'isPaletteNameUnique']}
+              errorMessages={['Enter Palette Name', 'Name already used']}
+            />
+            <Button variant='contained' color='primary' type='submit'>
+              Save Palette
+            </Button>
+          </ValidatorForm>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -120,8 +141,9 @@ const NewPaletteForm = ({ savePalette, history }) => {
         />
         <ValidatorForm onSubmit={addNewColor}>
           <TextValidator
-            value={newName}
-            onChange={setName}
+            value={newColorName}
+            name='newColorName'
+            onChange={setColorName}
             validators={['required', 'isColorNameUnique', 'isColorUnique']}
             errorMessages={[
               'This field is required',
@@ -148,6 +170,7 @@ const NewPaletteForm = ({ savePalette, history }) => {
             color={color.color}
             name={color.name}
             key={color.name}
+            handleClick={() => deleteColorBox(color.name)}
           />
         ))}
       </main>
