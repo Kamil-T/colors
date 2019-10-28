@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import clsx from 'clsx'
 import { useStyles } from '../styles/NewPaletteFormStyles'
 import Drawer from '@material-ui/core/Drawer'
@@ -11,18 +11,21 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import Button from '@material-ui/core/Button'
-import DraggableColorBox from './DraggableColorBox'
+import DraggableColorList from './DraggableColorList'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import { ChromePicker } from 'react-color'
 import useInputState from '../hooks/useInputState'
+import { PalettesContext } from '../contexts/PalettesContext'
+import { arrayMove } from 'react-sortable-hoc'
 
-const NewPaletteForm = ({ palettes, savePalette, history }) => {
+const NewPaletteForm = ({ history }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [currentColor, setColor] = useState('teal')
   const [colors, setColors] = useState([{ color: 'blue', name: 'blue' }])
   const [newColorName, setColorName, resetColorName] = useInputState('')
   const [newPaletteName, setPaletteName] = useInputState('')
+  const [palettes, setPalettes] = useContext(PalettesContext)
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isColorNameUnique', value =>
@@ -61,6 +64,10 @@ const NewPaletteForm = ({ palettes, savePalette, history }) => {
     resetColorName()
   }
 
+  const savePalette = newPalette => {
+    setPalettes([...palettes, newPalette])
+  }
+
   const handleSubmit = () => {
     const newPalette = {
       paletteName: newPaletteName,
@@ -73,6 +80,11 @@ const NewPaletteForm = ({ palettes, savePalette, history }) => {
 
   const deleteColorBox = colorName => {
     const updatedColors = colors.filter(color => color.name !== colorName)
+    setColors(updatedColors)
+  }
+
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    const updatedColors = arrayMove(colors, oldIndex, newIndex)
     setColors(updatedColors)
   }
 
@@ -165,14 +177,12 @@ const NewPaletteForm = ({ palettes, savePalette, history }) => {
           [classes.contentShift]: open
         })}>
         <div className={classes.drawerHeader} />
-        {colors.map(color => (
-          <DraggableColorBox
-            color={color.color}
-            name={color.name}
-            key={color.name}
-            handleClick={() => deleteColorBox(color.name)}
-          />
-        ))}
+        <DraggableColorList
+          colors={colors}
+          deleteColorBox={deleteColorBox}
+          axis='xy'
+          onSortEnd={onSortEnd}
+        />
       </main>
     </div>
   )

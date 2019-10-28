@@ -2,12 +2,18 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
+import ColorProvider from './contexts/ColorContext'
+import PalettesProvider from './contexts/PalettesContext'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
   <BrowserRouter basename={process.env.PUBLIC_URL}>
-    <App />
+    <PalettesProvider>
+      <ColorProvider>
+        <App />
+      </ColorProvider>
+    </PalettesProvider>
   </BrowserRouter>,
   document.getElementById('root')
 )
