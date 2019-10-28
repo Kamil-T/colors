@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import clsx from 'clsx'
 import { useStyles } from '../styles/NewPaletteFormStyles'
 import AppBar from '@material-ui/core/AppBar'
@@ -10,12 +10,14 @@ import Button from '@material-ui/core/Button'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import useInputState from '../hooks/useInputState'
 import { PalettesContext } from '../contexts/PalettesContext'
+import { ColorsContext, OpenContext } from '../contexts/NewPaletteContext'
 
-const PaletteFormNav = ({ open, setOpen, history }) => {
+const PaletteFormNav = ({ history }) => {
   const classes = useStyles()
   const [palettes, setPalettes] = useContext(PalettesContext)
   const [newPaletteName, setPaletteName] = useInputState('')
-  const [colors] = useState(palettes[0].colors)
+  const [colors] = useContext(ColorsContext)
+  const [open, setOpen] = useContext(OpenContext)
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPaletteNameUnique', value =>

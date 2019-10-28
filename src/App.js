@@ -6,6 +6,8 @@ import SingleColorPalette from './components/SingleColorPalette'
 import { generatePalette } from './colorHelpers'
 import NewPaletteForm from './components/NewPaletteForm'
 import { PalettesContext } from './contexts/PalettesContext'
+import ColorProvider from './contexts/ColorContext'
+import NewPaletteProvider from './contexts/NewPaletteContext'
 
 function App() {
   const [palettes] = useContext(PalettesContext)
@@ -26,27 +28,35 @@ function App() {
       <Route
         exact
         path='/palette/new'
-        render={routeProps => <NewPaletteForm {...routeProps} />}
+        render={routeProps => (
+          <NewPaletteProvider>
+            <NewPaletteForm {...routeProps} />
+          </NewPaletteProvider>
+        )}
       />
       <Route
         exact
         path='/palette/:id'
         render={routeProps => (
-          <Palette
-            palette={generatePalette(findPalette(routeProps.match.params.id))}
-          />
+          <ColorProvider>
+            <Palette
+              palette={generatePalette(findPalette(routeProps.match.params.id))}
+            />
+          </ColorProvider>
         )}
       />
       <Route
         exact
         path='/palette/:paletteId/:colorId'
         render={routeProps => (
-          <SingleColorPalette
-            colorId={routeProps.match.params.colorId}
-            palette={generatePalette(
-              findPalette(routeProps.match.params.paletteId)
-            )}
-          />
+          <ColorProvider>
+            <SingleColorPalette
+              colorId={routeProps.match.params.colorId}
+              palette={generatePalette(
+                findPalette(routeProps.match.params.paletteId)
+              )}
+            />
+          </ColorProvider>
         )}
       />
     </Switch>
