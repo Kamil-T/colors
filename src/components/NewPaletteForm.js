@@ -3,15 +3,13 @@ import clsx from 'clsx'
 import { useStyles } from '../styles/NewPaletteFormStyles'
 import Drawer from '@material-ui/core/Drawer'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import Button from '@material-ui/core/Button'
 import DraggableColorList from './DraggableColorList'
+import PaletteFormNav from './PaletteFormNav'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import { ChromePicker } from 'react-color'
 import useInputState from '../hooks/useInputState'
@@ -23,8 +21,7 @@ const NewPaletteForm = ({ history }) => {
   const [open, setOpen] = useState(false)
   const [currentColor, setColor] = useState('teal')
   const [newColorName, setColorName, resetColorName] = useInputState('')
-  const [newPaletteName, setPaletteName] = useInputState('')
-  const [palettes, setPalettes] = useContext(PalettesContext)
+  const [palettes] = useContext(PalettesContext)
   const [colors, setColors] = useState(palettes[0].colors)
   const paletteFull = colors.length >= 20
 
@@ -36,17 +33,7 @@ const NewPaletteForm = ({ history }) => {
     ValidatorForm.addValidationRule('isColorUnique', value =>
       colors.every(({ color }) => color !== currentColor)
     )
-
-    ValidatorForm.addValidationRule('isPaletteNameUnique', value =>
-      palettes.every(
-        ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
-      )
-    )
-  }, [colors, currentColor, palettes])
-
-  const handleDrawerOpen = () => {
-    setOpen(true)
-  }
+  }, [colors, currentColor])
 
   const handleDrawerClose = () => {
     setOpen(false)
@@ -63,20 +50,6 @@ const NewPaletteForm = ({ history }) => {
     }
     setColors([...colors, newColor])
     resetColorName()
-  }
-
-  const savePalette = newPalette => {
-    setPalettes([...palettes, newPalette])
-  }
-
-  const handleSubmit = () => {
-    const newPalette = {
-      paletteName: newPaletteName,
-      id: newPaletteName.toLowerCase().replace(/ /g, '-'),
-      colors: colors
-    }
-    savePalette(newPalette)
-    history.push('/')
   }
 
   const deleteColorBox = colorName => {
@@ -103,39 +76,7 @@ const NewPaletteForm = ({ history }) => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position='fixed'
-        color='default'
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open
-        })}>
-        <Toolbar>
-          <IconButton
-            color='inherit'
-            aria-label='open drawer'
-            onClick={handleDrawerOpen}
-            edge='start'
-            className={clsx(classes.menuButton, open && classes.hide)}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant='h6' noWrap>
-            Persistent drawer
-          </Typography>
-          <ValidatorForm onSubmit={handleSubmit}>
-            <TextValidator
-              label='Palette Name'
-              value={newPaletteName}
-              name='newPaletteName'
-              onChange={setPaletteName}
-              validators={['required', 'isPaletteNameUnique']}
-              errorMessages={['Enter Palette Name', 'Name already used']}
-            />
-            <Button variant='contained' color='primary' type='submit'>
-              Save Palette
-            </Button>
-          </ValidatorForm>
-        </Toolbar>
-      </AppBar>
+      <PaletteFormNav open={open} setOpen={setOpen} history={history} />
       <Drawer
         className={classes.drawer}
         variant='persistent'
