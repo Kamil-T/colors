@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const drawerWidth = 310
+const drawerWidth = 380
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -10,7 +10,11 @@ export const useStyles = makeStyles(theme => ({
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
-    })
+    }),
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: '64px'
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -23,6 +27,7 @@ export const useStyles = makeStyles(theme => ({
   menuButton: {
     marginRight: theme.spacing(2)
   },
+  navForm: {},
   hide: {
     display: 'none'
   },
@@ -31,14 +36,43 @@ export const useStyles = makeStyles(theme => ({
     flexShrink: 0
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    display: 'flex',
+    alignItems: 'center'
   },
   drawerHeader: {
+    width: '90%',
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end'
+  },
+  container: {
+    width: '90%',
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    margin: '0 auto'
+  },
+  btns: {
+    width: '100%'
+  },
+  btn: {
+    width: '50%'
+  },
+  picker: {
+    width: '100% !important',
+    marginTop: '2rem'
+  },
+  addColor: {
+    width: '100%',
+    marginTop: '1rem',
+    fontSize: '2rem !important'
+  },
+  colorNameInput: {
+    width: '100%',
+    height: '70px'
   },
   content: {
     height: 'calc(100vh - 64px)',

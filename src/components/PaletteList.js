@@ -7,7 +7,6 @@ import { PalettesContext } from '../contexts/PalettesContext'
 
 const PaletteList = ({ classes, history }) => {
   const [palettes] = useContext(PalettesContext)
-  console.log(palettes)
   return (
     <div className={classes.root}>
       <div className={classes.container}>

@@ -1,6 +1,8 @@
 import React, { useEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { useStyles } from '../styles/NewPaletteFormStyles'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -46,39 +48,49 @@ const PaletteFormNav = ({ history }) => {
   }
 
   return (
-    <AppBar
-      position='fixed'
-      color='default'
-      className={clsx(classes.appBar, {
-        [classes.appBarShift]: open
-      })}>
-      <Toolbar>
-        <IconButton
-          color='inherit'
-          aria-label='open drawer'
-          onClick={handleDrawerOpen}
-          edge='start'
-          className={clsx(classes.menuButton, open && classes.hide)}>
-          <MenuIcon />
-        </IconButton>
-        <Typography variant='h6' noWrap>
-          Persistent drawer
-        </Typography>
-        <ValidatorForm onSubmit={handleSubmit}>
-          <TextValidator
-            label='Palette Name'
-            value={newPaletteName}
-            name='newPaletteName'
-            onChange={setPaletteName}
-            validators={['required', 'isPaletteNameUnique']}
-            errorMessages={['Enter Palette Name', 'Name already used']}
-          />
-          <Button variant='contained' color='primary' type='submit'>
-            Save Palette
-          </Button>
-        </ValidatorForm>
-      </Toolbar>
-    </AppBar>
+    <div>
+      <CssBaseline />
+      <AppBar
+        position='fixed'
+        color='default'
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open
+        })}>
+        <Toolbar>
+          <IconButton
+            color='inherit'
+            aria-label='open drawer'
+            onClick={handleDrawerOpen}
+            edge='start'
+            className={clsx(classes.menuButton, open && classes.hide)}>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant='h6' noWrap>
+            Create A Palette
+          </Typography>
+        </Toolbar>
+        <div className={classes.navForm}>
+          <ValidatorForm onSubmit={handleSubmit}>
+            <TextValidator
+              label='Palette Name'
+              value={newPaletteName}
+              name='newPaletteName'
+              onChange={setPaletteName}
+              validators={['required', 'isPaletteNameUnique']}
+              errorMessages={['Enter Palette Name', 'Name already used']}
+            />
+            <Button variant='contained' color='primary' type='submit'>
+              Save Palette
+            </Button>
+          </ValidatorForm>
+          <Link to='/'>
+            <Button variant='contained' color='secondary'>
+              Go back
+            </Button>
+          </Link>
+        </div>
+      </AppBar>
+    </div>
   )
 }
 

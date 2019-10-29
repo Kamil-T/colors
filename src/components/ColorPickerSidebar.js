@@ -75,44 +75,59 @@ const ColorPickerSidebar = () => {
         </IconButton>
       </div>
       <Divider />
-      <Typography variant='h4'>Design Your Palette</Typography>
-      <div>
-        <Button variant='contained' color='secondary' onClick={clearPalette}>
-          Clear Palette
-        </Button>
-        <Button
-          variant='contained'
-          color='primary'
-          onClick={addRandomColor}
-          disabled={paletteFull}>
-          {paletteFull ? 'Palette Full' : 'Add Random Color'}
-        </Button>
-      </div>
-      <ChromePicker
-        color={currentColor}
-        onChangeComplete={updateCurrentColor}
-      />
-      <ValidatorForm onSubmit={addNewColor}>
-        <TextValidator
-          value={newColorName}
-          name='newColorName'
-          onChange={setColorName}
-          validators={['required', 'isColorNameUnique', 'isColorUnique']}
-          errorMessages={[
-            'This field is required',
-            'Color name must be unique',
-            'Color already used!'
-          ]}
+      <div className={classes.container}>
+        <Typography variant='h4' gutterBottom>
+          Design Your Palette
+        </Typography>
+        <div className={classes.btns}>
+          <Button
+            variant='contained'
+            color='secondary'
+            className={classes.btn}
+            onClick={clearPalette}>
+            Clear Palette
+          </Button>
+          <Button
+            variant='contained'
+            color='primary'
+            className={classes.btn}
+            onClick={addRandomColor}
+            disabled={paletteFull}>
+            {paletteFull ? 'Palette Full' : 'Random Color'}
+          </Button>
+        </div>
+        <ChromePicker
+          color={currentColor}
+          onChangeComplete={updateCurrentColor}
+          className={classes.picker}
         />
-        <Button
-          variant='contained'
-          type='submit'
-          color='primary'
-          disabled={paletteFull}
-          style={{ backgroundColor: paletteFull ? 'grey' : currentColor }}>
-          {paletteFull ? 'Palette Full' : 'Add Color'}
-        </Button>
-      </ValidatorForm>
+        <ValidatorForm onSubmit={addNewColor}>
+          <TextValidator
+            value={newColorName}
+            name='newColorName'
+            placeholder='Color Name'
+            variant='filled'
+            margin='normal'
+            className={classes.colorNameInput}
+            onChange={setColorName}
+            validators={['required', 'isColorNameUnique', 'isColorUnique']}
+            errorMessages={[
+              'This field is required',
+              'Color name must be unique',
+              'Color already used!'
+            ]}
+          />
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            disabled={paletteFull}
+            className={classes.addColor}
+            style={{ backgroundColor: paletteFull ? 'grey' : currentColor }}>
+            {paletteFull ? 'Palette Full' : 'Add Color'}
+          </Button>
+        </ValidatorForm>
+      </div>
     </Drawer>
   )
 }
