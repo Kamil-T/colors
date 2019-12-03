@@ -11,9 +11,9 @@ export const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row !important',
     justifyContent: 'space-between',
+    alignItems: 'center',
     height: '64px'
   },
   appBarShift: {
@@ -25,9 +25,18 @@ export const useStyles = makeStyles(theme => ({
     })
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: 20,
+    marginLeft: 12
   },
-  navForm: {},
+  navBtns: {
+    marginRight: '1rem',
+    '& a': {
+      textDecoration: 'none'
+    }
+  },
+  navBtn: {
+    margin: '0 0.5rem'
+  },
   hide: {
     display: 'none'
   },

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { useStyles } from '../styles/NewPaletteFormStyles'
@@ -9,46 +9,24 @@ import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import Button from '@material-ui/core/Button'
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
-import useInputState from '../hooks/useInputState'
-import { PalettesContext } from '../contexts/PalettesContext'
-import { ColorsContext, OpenContext } from '../contexts/NewPaletteContext'
+import { OpenContext } from '../contexts/NewPaletteContext'
+import PaletteMetaForm from './PaletteMetaForm'
 
 const PaletteFormNav = ({ history }) => {
   const classes = useStyles()
-  const [palettes, setPalettes] = useContext(PalettesContext)
-  const [newPaletteName, setPaletteName] = useInputState('')
-  const [colors] = useContext(ColorsContext)
   const [open, setOpen] = useContext(OpenContext)
-
-  useEffect(() => {
-    ValidatorForm.addValidationRule('isPaletteNameUnique', value =>
-      palettes.every(
-        ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
-      )
-    )
-  }, [palettes])
+  const [formShowing, setShowing] = useState(false)
 
   const handleDrawerOpen = () => {
     setOpen(true)
   }
 
-  const savePalette = newPalette => {
-    setPalettes([...palettes, newPalette])
-  }
-
-  const handleSubmit = () => {
-    const newPalette = {
-      paletteName: newPaletteName,
-      id: newPaletteName.toLowerCase().replace(/ /g, '-'),
-      colors: colors
-    }
-    savePalette(newPalette)
-    history.push('/')
+  const formShow = () => {
+    setShowing(true)
   }
 
   return (
-    <div>
+    <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position='fixed'
@@ -56,7 +34,7 @@ const PaletteFormNav = ({ history }) => {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open
         })}>
-        <Toolbar>
+        <Toolbar disableGutters={!open}>
           <IconButton
             color='inherit'
             aria-label='open drawer'
@@ -69,27 +47,31 @@ const PaletteFormNav = ({ history }) => {
             Create A Palette
           </Typography>
         </Toolbar>
-        <div className={classes.navForm}>
-          <ValidatorForm onSubmit={handleSubmit}>
-            <TextValidator
-              label='Palette Name'
-              value={newPaletteName}
-              name='newPaletteName'
-              onChange={setPaletteName}
-              validators={['required', 'isPaletteNameUnique']}
-              errorMessages={['Enter Palette Name', 'Name already used']}
-            />
-            <Button variant='contained' color='primary' type='submit'>
-              Save Palette
-            </Button>
-          </ValidatorForm>
-          <Link to='/'>
-            <Button variant='contained' color='secondary'>
+        <div className={classes.navBtns}>
+          <Link to='/' className={classes.link}>
+            <Button
+              variant='contained'
+              color='secondary'
+              className={classes.navBtn}>
               Go back
             </Button>
           </Link>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={formShow}
+            className={classes.navBtn}>
+            Save
+          </Button>
         </div>
       </AppBar>
+      {formShowing && (
+        <PaletteMetaForm
+          history={history}
+          formShowing={formShowing}
+          setShowing={setShowing}
+        />
+      )}
     </div>
   )
 }
