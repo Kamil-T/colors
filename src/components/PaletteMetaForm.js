@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -9,11 +9,14 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import useInputState from '../hooks/useInputState'
 import { PalettesContext } from '../contexts/PalettesContext'
 import { ColorsContext } from '../contexts/NewPaletteContext'
+import { Picker } from 'emoji-mart'
+import 'emoji-mart/css/emoji-mart.css'
 
 const PaletteMetaForm = ({ history, formShowing, setShowing }) => {
   const [colors] = useContext(ColorsContext)
   const [palettes, setPalettes] = useContext(PalettesContext)
   const [newPaletteName, setPaletteName] = useInputState('')
+  const [emoji, setEmoji] = useState()
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isPaletteNameUnique', value =>
@@ -30,6 +33,7 @@ const PaletteMetaForm = ({ history, formShowing, setShowing }) => {
   const handleSubmit = () => {
     const newPalette = {
       paletteName: newPaletteName,
+      emoji: emoji.native,
       id: newPaletteName.toLowerCase().replace(/ /g, '-'),
       colors: colors
     }
@@ -49,7 +53,7 @@ const PaletteMetaForm = ({ history, formShowing, setShowing }) => {
       <DialogTitle id='form-dialog-title'>Choose a Palette Name</DialogTitle>
       <ValidatorForm onSubmit={handleSubmit}>
         <DialogContent>
-          <DialogContentText>Enter an unique palette name</DialogContentText>
+          <DialogContentText>Enter a unique palette name</DialogContentText>
           <TextValidator
             label='Palette Name'
             value={newPaletteName}
@@ -61,6 +65,7 @@ const PaletteMetaForm = ({ history, formShowing, setShowing }) => {
             errorMessages={['Enter Palette Name', 'Name already used']}
           />
         </DialogContent>
+        <Picker title='Pick emoji' onSelect={setEmoji} />
         <DialogActions>
           <Button onClick={handleClose} color='primary'>
             Cancel
