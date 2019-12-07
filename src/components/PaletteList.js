@@ -6,7 +6,8 @@ import styles from '../styles/PaletteListStyles'
 import { PalettesContext } from '../contexts/PalettesContext'
 
 const PaletteList = ({ classes, history }) => {
-  const [palettes] = useContext(PalettesContext)
+  const [palettes, setPalettes] = useContext(PalettesContext)
+
   return (
     <div className={classes.root}>
       <div className={classes.container}>
@@ -16,7 +17,13 @@ const PaletteList = ({ classes, history }) => {
         </nav>
         <div className={classes.palettes}>
           {palettes.map(palette => (
-            <MiniPalette history={history} key={palette.id} {...palette} />
+            <MiniPalette
+              history={history}
+              key={palette.id}
+              {...palette}
+              palettes={palettes}
+              setPalettes={setPalettes}
+            />
           ))}
         </div>
       </div>
