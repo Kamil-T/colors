@@ -7,8 +7,6 @@ import Navbar from './Navbar'
 import { FormatContext } from '../contexts/ColorContext'
 import PaletteFooter from './PaletteFooter'
 
-
-
 const SingleColorPalette = ({ palette, colorId, classes }) => {
   const [format] = useContext(FormatContext)
   const { paletteName, emoji, id } = palette

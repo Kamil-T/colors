@@ -1,4 +1,5 @@
 import chroma from 'chroma-js'
+import sizes from './sizes'
 
 export default {
   ColorBox: {
@@ -13,6 +14,18 @@ export default {
     '&:hover button': {
       opacity: '1',
       transition: '0.5s'
+    },
+    [sizes.down('md')]: {
+      width: props => (props.showLink ? '25%' : '20%'),
+      height: props => (props.showLink ? '20%' : '50%')
+    },
+    [sizes.down('sm')]: {
+      width: props => (props.showLink ? '50%' : '50%'),
+      height: props => (props.showLink ? '10%' : '20%')
+    },
+    [sizes.down('xs')]: {
+      width: props => (props.showLink ? '100%' : '100%'),
+      height: props => (props.showLink ? '5%' : '10%')
     }
   },
   copyText: {
@@ -36,7 +49,7 @@ export default {
     position: 'absolute',
     border: 'none',
     right: '0px',
-    bottom: '0px',
+    top: '0px',
     width: '60px',
     height: '30px',
     textAlign: 'center',
@@ -80,7 +93,7 @@ export default {
   showOverlay: {
     opacity: '1',
     zIndex: '1',
-    transform: 'scale(10)',
+    transform: 'scale(20)',
     position: 'absolute'
   },
   copyMsg: {
@@ -104,7 +117,10 @@ export default {
       width: '100%',
       textAlign: 'center',
       marginBottom: '0',
-      padding: '1rem'
+      padding: '1rem',
+      [sizes.down('xs')]: {
+        fontSize: '5rem'
+      }
     },
     '& p': {
       fontSize: '2rem',

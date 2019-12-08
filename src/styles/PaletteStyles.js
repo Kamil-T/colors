@@ -1,3 +1,5 @@
+import sizes from './sizes'
+
 export default {
   Palette: {
     height: '98vh',
@@ -10,13 +12,18 @@ export default {
   goBack: {
     width: '20%',
     height: '50%',
-    margin: '0 auto',
     display: 'inline-block',
     position: 'relative',
-    cursor: 'pointer',
     textTransform: 'uppercase',
-    marginBottom: '-3.5px',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
+    [sizes.down('sm')]: {
+      height: '20%',
+      width: '50%'
+    },
+    [sizes.down('xs')]: {
+      height: '10%',
+      width: '100%'
+    }
   },
   backBtn: {
     width: '100px',
@@ -34,6 +41,7 @@ export default {
     lineHeight: '30px',
     color: 'white',
     border: 'none',
+    cursor: 'pointer',
     textDecoration: 'none'
   }
 }
