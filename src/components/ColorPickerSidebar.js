@@ -55,8 +55,15 @@ const ColorPickerSidebar = () => {
 
   const addRandomColor = () => {
     const allColors = palettes.map(p => p.colors).flat()
-    let randNum = Math.floor(Math.random() * allColors.length)
-    const randomColor = allColors[randNum]
+    let randNum
+    let randomColor
+    let isDuplicateColor = true
+
+    while (isDuplicateColor) {
+      randNum = Math.floor(Math.random() * allColors.length)
+      randomColor = allColors[randNum]
+      isDuplicateColor = colors.some(color => color.name === randomColor.name)
+    }
     setColors([...colors, randomColor])
   }
 
@@ -101,7 +108,7 @@ const ColorPickerSidebar = () => {
           onChangeComplete={updateCurrentColor}
           className={classes.picker}
         />
-        <ValidatorForm onSubmit={addNewColor}>
+        <ValidatorForm onSubmit={addNewColor} instantValidate={false}>
           <TextValidator
             value={newColorName}
             name='newColorName'

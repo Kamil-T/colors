@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, memo } from 'react'
 import { Link } from 'react-router-dom'
 import MiniPalette from './MiniPalette'
 import { withStyles } from '@material-ui/styles'
@@ -31,4 +31,4 @@ const PaletteList = ({ classes, history }) => {
   )
 }
 
-export default withStyles(styles)(PaletteList)
+export default memo(withStyles(styles)(PaletteList))

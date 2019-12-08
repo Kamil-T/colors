@@ -41,8 +41,8 @@ export default {
       height: '13px',
       marginTop: '-3px'
     },
-    [sizes.down('xs')]: {
-      width: '200px'
+    [sizes.down('sm')]: {
+      width: '163px'
     }
   },
   selectContainer: {
